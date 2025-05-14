@@ -9,7 +9,9 @@ import com.example.gelda.wallet.service.WalletService;
 import com.example.gelda.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import java.util.List;
+import java.util.stream.Collectors;
+import com.example.gelda.transaction.dto.TransactionHistoryDTO;
 
 
 @Service
@@ -94,4 +96,24 @@ public class TransactionService {
         Transaction transaction = new Transaction("Transfer", dto.getAmount(), sender, receiver);
         transactionRepository.save(transaction); // still saved, just not returned
     }
+
+    public List<TransactionHistoryDTO> getTransactionsByUserId(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        List<Transaction> transactions = transactionRepository.findBySenderOrReceiver(user, user);
+
+        return transactions.stream()
+                .map(tx -> new TransactionHistoryDTO(
+                        tx.getType(),
+                        tx.getAmount(),
+                        tx.getSender() != null ? tx.getSender().getName() : null,
+                        tx.getReceiver() != null ? tx.getReceiver().getName() : null,
+                        tx.getTransactionDate()
+                ))
+                .collect(Collectors.toList());
+    }
+
+
+
 }

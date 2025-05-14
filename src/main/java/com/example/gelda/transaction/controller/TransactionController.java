@@ -8,6 +8,8 @@ import com.example.gelda.transaction.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.example.gelda.transaction.dto.TransactionHistoryDTO;
+import java.util.List;
 
 import java.util.concurrent.TimeUnit;
 
@@ -43,5 +45,15 @@ public class TransactionController {
         transactionService.transfer(userId, dto);
         return ResponseEntity.ok("Transfer completed successfully.");
     }
+
+
+
+
+    @GetMapping("/{userId}/history")
+    public ResponseEntity<List<TransactionHistoryDTO>> getTransactionHistory(@PathVariable Long userId) {
+        List<TransactionHistoryDTO> history = transactionService.getTransactionsByUserId(userId);
+        return ResponseEntity.ok(history);
+    }
+
 
 }
