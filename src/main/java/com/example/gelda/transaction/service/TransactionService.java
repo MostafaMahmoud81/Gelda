@@ -29,7 +29,7 @@ public class TransactionService {
     }
 
     // Deposit method - Updates balance and creates a transaction record
-    public Transaction deposit(Long userId, TransactionAmountDTO dto) {
+    public void deposit(Long userId, TransactionAmountDTO dto) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
@@ -42,11 +42,11 @@ public class TransactionService {
 
         // Record the deposit transaction
         Transaction transaction = new Transaction("Deposit", dto.getAmount(), user, null);
-        return transactionRepository.save(transaction);
+        transactionRepository.save(transaction);
     }
 
     // Withdraw method - Updates balance and creates a transaction record
-    public Transaction withdraw(Long userId, TransactionAmountDTO dto) {
+    public void  withdraw(Long userId, TransactionAmountDTO dto) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
@@ -63,11 +63,11 @@ public class TransactionService {
 
         // Record the withdrawal transaction
         Transaction transaction = new Transaction("Withdraw", dto.getAmount(), user, null);
-        return transactionRepository.save(transaction);
+        transactionRepository.save(transaction);
     }
 
     // Transfer method - Handles the transfer between users, updates both balances and creates a transaction record
-    public Transaction transfer(Long senderId, TransferTransactionDTO dto) {
+    public void  transfer(Long senderId, TransferTransactionDTO dto) {
         User sender = userRepository.findById(senderId)
                 .orElseThrow(() -> new RuntimeException("Sender not found"));
 
@@ -91,8 +91,7 @@ public class TransactionService {
         walletService.updateBalance(senderId, senderBalance - dto.getAmount());
         walletService.updateBalance(receiver.getId(), receiverBalance + dto.getAmount());
 
-        // Record the transfer transaction
         Transaction transaction = new Transaction("Transfer", dto.getAmount(), sender, receiver);
-        return transactionRepository.save(transaction);
+        transactionRepository.save(transaction); // still saved, just not returned
     }
 }

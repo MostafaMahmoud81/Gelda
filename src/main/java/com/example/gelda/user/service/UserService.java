@@ -62,11 +62,12 @@ public class UserService {
         return "User created successfully, and wallet created.";
     }
 
-    // Get user by email
-    public User getUserByEmail(String email) {
-        return userRepository.findByEmail(email)
+    public Long getUserIdByEmail(String email) {
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found with email: " + email));
+        return user.getId(); // Make sure your User class has a getId() method
     }
+
 
     // Get user by ID
     public User getUserById(Long id) {
@@ -179,7 +180,6 @@ public class UserService {
         return "Login successful. JWT Token: " + token;
     }
 
-
     public UserWalletInfoDTO getUserWalletInfo(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -190,6 +190,5 @@ public class UserService {
                 user.getWallet().getBalance()
         );
     }
-
 
 }

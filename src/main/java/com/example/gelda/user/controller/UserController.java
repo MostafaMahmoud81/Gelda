@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -32,10 +34,11 @@ public class UserController {
 
     // Get user by email
     @GetMapping("/email/{email}")
-    public ResponseEntity<User> getUserByEmail(@PathVariable String email) {
-        User user = userService.getUserByEmail(email);
-        return ResponseEntity.ok(user);
+    public ResponseEntity<Long> getUserIdByEmail(@PathVariable String email) {
+        Long userId = userService.getUserIdByEmail(email);
+        return ResponseEntity.ok(userId);
     }
+
 
     // Get user by ID
     @GetMapping("/{id}")
@@ -87,7 +90,6 @@ public class UserController {
         return ResponseEntity.ok(userService.removeFriendByMobileNumber(userId, dto.getFriendMobileNumber()));
     }
 
-    // Login endpoint
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginDTO loginDTO) {
         String response = userService.loginUser(loginDTO);
