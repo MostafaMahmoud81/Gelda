@@ -1,5 +1,7 @@
 package com.example.gelda.user.service;
 
+import com.example.gelda.security.JwtUtil;
+import com.example.gelda.user.dto.LoginDTO;
 import com.example.gelda.user.dto.UserDTOCreate;
 import com.example.gelda.user.dto.UpdateUserDTO;
 import com.example.gelda.user.dto.FriendDTO;
@@ -162,4 +164,22 @@ public class UserService {
 
         return "Friend removed successfully.";
     }
+
+    public String loginUser(LoginDTO loginDTO) {
+        // Check if user exists by email
+        User user = userRepository.findByEmail(loginDTO.getEmail())
+                .orElseThrow(() -> new RuntimeException("User not found with email: " + loginDTO.getEmail()));
+
+        // Validate password
+        if (!passwordEncoder.matches(loginDTO.getPassword(), user.getPassword())) {
+            throw new RuntimeException("Invalid password.");
+        }
+
+        // Generate JWT token
+        String token = JwtUtil.generateToken(user.getEmail());
+
+        // Return the JWT token as part of the response
+        return "Login successful. JWT Token: " + token;
+    }
+
 }

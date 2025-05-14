@@ -2,12 +2,7 @@ package com.example.gelda.user.controller;
 
 
 
-import com.example.gelda.user.dto.UserDTOCreate;
-import com.example.gelda.user.dto.UpdateUserDTO;
-import com.example.gelda.user.dto.FriendDTO;
-import com.example.gelda.user.dto.RemoveFriendDTO;
-import com.example.gelda.user.dto.AddFriendDTO;
-import com.example.gelda.user.dto.DeleteUserDTO;
+import com.example.gelda.user.dto.*;
 import com.example.gelda.user.entity.User;
 import com.example.gelda.user.service.UserService;
 import jakarta.validation.Valid;
@@ -92,7 +87,12 @@ public class UserController {
         return ResponseEntity.ok(userService.removeFriendByMobileNumber(userId, dto.getFriendMobileNumber()));
     }
 
-
+    // Login endpoint
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody LoginDTO loginDTO) {
+        String response = userService.loginUser(loginDTO);
+        return ResponseEntity.ok(response); // Return the login success message or JWT token
+    }
 
 
 
