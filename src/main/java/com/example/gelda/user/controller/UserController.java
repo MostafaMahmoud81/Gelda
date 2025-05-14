@@ -94,6 +94,13 @@ public class UserController {
         return ResponseEntity.ok(response); // Return the login success message or JWT token
     }
 
+    @GetMapping("/{userId}/wallet-info")
+    public ResponseEntity<UserWalletInfoDTO> getUserWalletInfo(@PathVariable Long userId) {
+        UserWalletInfoDTO walletInfo = userService.getUserWalletInfo(userId);
+        return ResponseEntity.ok(walletInfo);
+    }
+
+
 
 
 

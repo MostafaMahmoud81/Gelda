@@ -1,10 +1,7 @@
 package com.example.gelda.user.service;
 
 import com.example.gelda.security.JwtUtil;
-import com.example.gelda.user.dto.LoginDTO;
-import com.example.gelda.user.dto.UserDTOCreate;
-import com.example.gelda.user.dto.UpdateUserDTO;
-import com.example.gelda.user.dto.FriendDTO;
+import com.example.gelda.user.dto.*;
 import com.example.gelda.user.entity.User;
 import com.example.gelda.wallet.entity.Wallet;
 import com.example.gelda.user.repository.UserRepository;
@@ -181,5 +178,18 @@ public class UserService {
         // Return the JWT token as part of the response
         return "Login successful. JWT Token: " + token;
     }
+
+
+    public UserWalletInfoDTO getUserWalletInfo(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        return new UserWalletInfoDTO(
+                user.getName(),
+                user.getWallet().getId(),
+                user.getWallet().getBalance()
+        );
+    }
+
 
 }
