@@ -34,10 +34,11 @@ public class UserController {
 
     // Get user by email
     @GetMapping("/email/{email}")
-    public ResponseEntity<Long> getUserIdByEmail(@PathVariable String email) {
-        Long userId = userService.getUserIdByEmail(email);
-        return ResponseEntity.ok(userId);
+    public ResponseEntity<UserIdAndNameDTO> getUserIdAndNameByEmail(@PathVariable String email) {
+        UserIdAndNameDTO result = userService.getUserIdAndNameByEmail(email);
+        return ResponseEntity.ok(result);
     }
+
 
 
     // Get user by ID

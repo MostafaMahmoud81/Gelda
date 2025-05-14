@@ -62,11 +62,12 @@ public class UserService {
         return "User created successfully, and wallet created.";
     }
 
-    public Long getUserIdByEmail(String email) {
+    public UserIdAndNameDTO getUserIdAndNameByEmail(String email) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found with email: " + email));
-        return user.getId(); // Make sure your User class has a getId() method
+        return new UserIdAndNameDTO(user.getId(), user.getName());
     }
+
 
 
     // Get user by ID
