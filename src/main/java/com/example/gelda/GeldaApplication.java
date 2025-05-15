@@ -5,9 +5,11 @@ import com.example.gelda.config.WebConfig;
 import com.example.gelda.config.SecurityConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.Import;
 
 @SpringBootApplication
+@EnableAspectJAutoProxy
 @Import({WebConfig.class, SecurityConfiggg.class, SecurityConfig.class})
 public class GeldaApplication {
 
