@@ -8,6 +8,7 @@ import com.example.gelda.user.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,14 +26,14 @@ public class UserController {
         this.userService = userService;
     }
 
-    // Create a new user
+    @PreAuthorize("USER")
     @PostMapping
     public ResponseEntity<String> createUser(@Valid @RequestBody UserDTOCreate userDTO) {
         String message = userService.createUser(userDTO);
         return ResponseEntity.ok(message);
     }
 
-    // Get user by email
+    @PreAuthorize("USER")
     @GetMapping("/email/{email}")
     public ResponseEntity<UserIdAndNameDTO> getUserIdAndNameByEmail(@PathVariable String email) {
         UserIdAndNameDTO result = userService.getUserIdAndNameByEmail(email);
@@ -41,26 +42,28 @@ public class UserController {
 
 
 
-    // Get user by ID
+    @PreAuthorize("USER")
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
         User user = userService.getUserById(id);
         return ResponseEntity.ok(user);
     }
 
-    // Get user by mobile number
+    @PreAuthorize("USER")
     @GetMapping("/mobile/{mobileNumber}")
     public ResponseEntity<User> getUserByMobileNumber(@PathVariable String mobileNumber) {
         User user = userService.getUserByMobileNumber(mobileNumber);
         return ResponseEntity.ok(user);
     }
 
+    @PreAuthorize("USER")
     @PutMapping("/{id}")
     public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody UpdateUserDTO updateUserDTO) {
         User updatedUser = userService.updateUser(id, updateUserDTO);
         return ResponseEntity.ok(updatedUser);
     }
 
+    @PreAuthorize("USER")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteUser(
             @PathVariable Long id,
@@ -91,12 +94,14 @@ public class UserController {
         return ResponseEntity.ok(userService.removeFriendByMobileNumber(userId, dto.getFriendMobileNumber()));
     }
 
+    @PreAuthorize("USER")
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginDTO loginDTO) {
         String response = userService.loginUser(loginDTO);
         return ResponseEntity.ok(response); // Return the login success message or JWT token
     }
 
+    @PreAuthorize("USER")
     @GetMapping("/{userId}/wallet-info")
     public ResponseEntity<UserWalletInfoDTO> getUserWalletInfo(@PathVariable Long userId) {
         UserWalletInfoDTO walletInfo = userService.getUserWalletInfo(userId);
