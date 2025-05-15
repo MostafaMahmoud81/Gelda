@@ -1,4 +1,4 @@
-package com.example.gelda.notification.aspect;
+package com.example.gelda.aspects;
 
 import com.example.gelda.notification.service.NotificationService;
 import com.example.gelda.transaction.dto.TransactionAmountDTO;
