@@ -47,17 +47,21 @@ public class TransactionNotificationAspect {
         notificationService.createNotification(userId, message);
     }
 
-    // Trigger after transfer
     @AfterReturning("transferPointcut() && args(senderId, dto)")
     public void afterTransfer(Long senderId, TransferTransactionDTO dto) {
+        // Get sender user object
+        User sender = userRepository.findById(senderId).orElse(null);
+        if (sender == null) return;
+
         String senderMessage = "You transferred " + dto.getAmount() + " EGP to " + dto.getReceiverMobileNumber();
         notificationService.createNotification(senderId, senderMessage);
 
-        // Notify receiver if found
+        // Notify receiver with sender name
         User receiver = userRepository.findByMobileNumber(dto.getReceiverMobileNumber()).orElse(null);
         if (receiver != null) {
-            String receiverMessage = "You received " + dto.getAmount() + " EGP from another user.";
+            String receiverMessage = "You received " + dto.getAmount() + " EGP from " + sender.getName() + ".";
             notificationService.createNotification(receiver.getId(), receiverMessage);
         }
     }
+
 }
