@@ -106,63 +106,6 @@ public class UserService {
         return "User deleted successfully";
     }
 
-    // Add a friend
-    public String addFriend(Long userId, String friendMobileNumber) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
-        User friend = userRepository.findByMobileNumber(friendMobileNumber)
-                .orElseThrow(() -> new RuntimeException("Friend not found with mobile number"));
-
-        if (user.getId().equals(friend.getId())) {
-            throw new RuntimeException("You cannot add yourself as a friend.");
-        }
-
-        // Avoid adding duplicates
-        if (user.getFriends().contains(friend)) {
-            return "Friend already added.";
-        }
-
-        // Add each user to the other's friends list
-        user.getFriends().add(friend);
-        friend.getFriends().add(user);
-
-        userRepository.save(user);
-        userRepository.save(friend);
-
-        return "Friend added successfully.";
-    }
-
-    // Get friends of a user
-    public List<FriendDTO> getFriends(Long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
-        return user.getFriends().stream()
-                .map(friend -> new FriendDTO(friend.getName(), friend.getEmail(), friend.getMobileNumber()))
-                .collect(Collectors.toList());
-    }
-
-    // Remove a friend
-    public String removeFriendByMobileNumber(Long userId, String friendMobileNumber) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
-        User friend = userRepository.findByMobileNumber(friendMobileNumber)
-                .orElseThrow(() -> new RuntimeException("Friend not found with this mobile number"));
-
-        if (!user.getFriends().contains(friend)) {
-            throw new IllegalArgumentException("This user is not your friend.");
-        }
-
-        user.getFriends().remove(friend);
-        friend.getFriends().remove(user);
-
-        userRepository.save(user);
-        userRepository.save(friend);
-
-        return "Friend removed successfully.";
-    }
 
     public String loginUser(LoginDTO loginDTO) {
         // Check if user exists by email

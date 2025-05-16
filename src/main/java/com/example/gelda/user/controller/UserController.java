@@ -68,28 +68,6 @@ public class UserController {
         return ResponseEntity.ok(result);
     }
 
-
-    @PostMapping("/{userId}/add-friend")
-    public ResponseEntity<String> addFriend(
-            @PathVariable Long userId,
-            @RequestBody AddFriendDTO dto
-    ) {
-        return ResponseEntity.ok(userService.addFriend(userId, dto.getFriendMobileNumber()));
-    }
-
-    @GetMapping("/{userId}/friends")
-    public List<FriendDTO> getUserFriends(@PathVariable Long userId) {
-        return userService.getFriends(userId);
-    }
-
-    @DeleteMapping("/{userId}/remove-friend")
-    public ResponseEntity<String> removeFriend(
-            @PathVariable Long userId,
-            @RequestBody RemoveFriendDTO dto
-    ) {
-        return ResponseEntity.ok(userService.removeFriendByMobileNumber(userId, dto.getFriendMobileNumber()));
-    }
-
     @PreAuthorize("USER")
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginDTO loginDTO) {
