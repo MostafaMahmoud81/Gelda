@@ -19,7 +19,6 @@ public class SecurityConfig {
         http
                 .securityMatcher("/api/**")
                 .authorizeHttpRequests(auth -> auth
-                        //.requestMatchers("/api/transactions/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .httpBasic(customizer -> {})
